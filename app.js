@@ -2,32 +2,38 @@
 
 // Email api to send email after form is completed
 
-function sendEmail (formData){
+function sendEmail(formData) {
   var data = {
     service_id: 'service_sdvmxns',
     template_id: 'template_ov16v0w',
     user_id: 'CsSrUchO2q11ZAmjo',
-    template_params: formData
-    
+    template_params: formData,
   };
   $.ajax('https://api.emailjs.com/api/v1.0/email/send', {
     type: 'POST',
     data: JSON.stringify(data),
     contentType: 'application/json',
   })
-  .done(function () {
-    alert('Your mail is sent!');
-  })
-  .fail(function (error) {
+    .done(function () {
+      alert('Your mail is sent!');
+    })
+    .fail(function (error) {
       alert('Oops... ' + JSON.stringify(error));
     });
 }
-function handleFormSubmit(event){
-event.preventDefault()
-console.log(event.target);
-const formData=$(event.target).serializeArray()
-console.log(formData);
+
+function handleFormSubmit(event) {
+  event.preventDefault();
+  console.log(event.target);
+  const formData = new FormData(event.target);
+  const formProps = Object.fromEntries(formData);
+  //const formData=$(event.target).serializeArray()
+  console.log(formProps);
+  sendEmail(formProps);
 }
+
+const quoteForm = document.getElementById('regForm');
+quoteForm.addEventListener('submit', handleFormSubmit);
 
 let currentTab = 0; // Current tab is set to be the first tab (0)
 showTab(currentTab); // Display the current tab
@@ -44,7 +50,7 @@ function showTab(n) {
   }
   if (n == x.length - 1) {
     document.getElementById('nextBtn').innerHTML = 'Submit';
-   document.getElementById('nextBtn').type = 'submit';
+
   } else {
     document.getElementById('nextBtn').innerHTML = 'Next';
   }
@@ -64,7 +70,8 @@ function nextPrev(n) {
   // if you have reached the end of the form... :
   if (currentTab >= x.length) {
     //...the form gets submitted:
-   // document.getElementById('regForm').submit();
+    // document.getElementById('regForm').submit();
+    document.getElementById('nextBtn').type = 'submit';
     console.log('submitted');
     return false;
   }
@@ -106,4 +113,4 @@ function fixStepIndicator(n) {
   }
   //... and adds the "active" class to the current step:
   x[n].className += ' active';
-}  
+}
