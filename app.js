@@ -30,6 +30,7 @@ function handleFormSubmit(event) {
   //const formData=$(event.target).serializeArray()
   console.log(formProps);
   sendEmail(formProps);
+  window.location.reload();
 }
 
 const quoteForm = document.getElementById('regForm');
